@@ -1,5 +1,6 @@
 {
   "name": "interview",
+  "private": "true",
   "scripts": {
     "test": "jest --passWithNoTests --verbose false"
   },
@@ -15,6 +16,7 @@
     "esno": "^0.8.0",
     "jest": "^27.0.6",
     "ts-jest": "^27.0.4",
-    "typescript": "^4.3.5"
+    "typescript": "^4.3.5",
+    "xlsx": "^0.17.0"
   }
 }
