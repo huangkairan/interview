@@ -24,6 +24,7 @@ describe('[3. 设计事件总线]', () => {
 
     bus
       .on('foo', listener)
+      .on('foo', listener)
       .emit('foo', 'text1')
       .emit('foo', 'text2')
       .off('foo', listener)
@@ -39,6 +40,8 @@ describe('[3. 设计事件总线]', () => {
 
     expect(logs).toEqual([
       ['text1'],
+      ['text1'],
+      ['text2'],
       ['text2'],
       ['text4'],
     ])
