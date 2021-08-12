@@ -18,7 +18,9 @@ describe('[3. 设计事件总线]', () => {
    */
   test('should complete implementation of basic features', () => {
     const bus = new EventBus()
-    const listener = (text: string) => console.log(text)
+    function listener(text: string) {
+      console.log(text)
+    }
 
     bus
       .on('foo', listener)
@@ -44,6 +46,49 @@ describe('[3. 设计事件总线]', () => {
     expect(warns).toEqual([
       ['[EventBus]: Related events that are not registered for \'foo\''],
       ['[EventBus]: Related events that are not registered for \'bar\''],
+    ])
+  })
+
+  /**
+   * 难度二
+   * 在 listener 中可以继续触发事件，要求在总线对象内部要保持正确的事件调用栈(树形)，并能提供接口打印出来。
+   */
+  test('should support output call stack', () => {
+    const bus = new EventBus()
+    function listener(this: EventBus, eventName: string, ...args: unknown[]) {
+      this.emit(eventName, ...args)
+    }
+
+    bus
+      .on('foo', listener)
+      .on('bar', listener)
+      .on('baz', listener)
+      .emit('foo', 'bar', 'baz')
+
+    expect(bus.log()).toEqual([
+      {
+        eventName: 'foo',
+        fn: listener,
+        args: ['bar', 'baz'],
+        isOnce: false,
+        derivedFrames: [
+          {
+            eventName: 'bar',
+            fn: listener,
+            args: ['baz'],
+            isOnce: false,
+            derivedFrames: [
+              {
+                eventName: 'baz',
+                fn: listener,
+                args: [],
+                isOnce: false,
+                derivedFrames: [],
+              },
+            ],
+          },
+        ],
+      },
     ])
   })
 })
