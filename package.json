@@ -2,7 +2,8 @@
   "name": "interview",
   "private": "true",
   "scripts": {
-    "test": "jest --passWithNoTests --verbose false"
+    "test": "jest --passWithNoTests --verbose false",
+    "lint": "eslint --ext .ts"
   },
   "repository": {
     "type": "git",
